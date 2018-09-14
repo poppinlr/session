@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -73,6 +71,12 @@ public class SessionApplicationTests {
         dataEntity.setPassword(passwordEncoder.encode("p2"));
 
         detailDataEntityRepository.save(dataEntity);
+    }
+
+    @Test
+    public void decode() {
+//        String js = CommonStaticService.decrypt("8gNDaBV5N24/e6n61tYkM2KOI8sAxNYPUVmmt5a0JudXo0Hb9EUp7DGjS1LaHsK2nuCBHkvgKTbYgn9zxg1PPM1rs5/6M3bBgKsDu7//BhgtdVFJRxf/qc+w22Tx08Y5/iEhDAeGhr6dQ3Fc/NCtbi9pGNvZELKPp3YP8ItIigM=\n");
+//        WrappedSession session = CommonStaticService.getObjectFromJson(js, WrappedSession.class);
     }
 
 }

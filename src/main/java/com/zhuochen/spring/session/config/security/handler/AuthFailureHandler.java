@@ -1,6 +1,8 @@
-package com.zhuochen.spring.session.config.security;
+package com.zhuochen.spring.session.config.security.handler;
 
+import com.zhuochen.spring.session.web.common.WrappedResponse;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,8 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        log.error("AuthFailureHandler:--------------", e);
+        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        httpServletResponse.getWriter().write(new WrappedResponse<>(null, HttpStatus.UNAUTHORIZED).toString());
+        log.info("AuthFailureHandler:--------------", e);
     }
 }

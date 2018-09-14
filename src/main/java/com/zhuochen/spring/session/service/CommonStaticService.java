@@ -1,13 +1,16 @@
 package com.zhuochen.spring.session.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zhuochen.spring.session.config.constants.CommonSymbol;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.FeatureDescriptor;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -76,10 +79,57 @@ public class CommonStaticService {
     }
 
     public static List<String> splitStringToStringList(String string) {
+
         return Optional.ofNullable(string)
                 .filter(StringUtils::isNotBlank)
                 .map(s -> Arrays.stream(s.split(CommonSymbol.SPLIT_SYMBOL)).collect(Collectors.toList()))
                 .orElse(Collections.<String>emptyList());
     }
 
+    public static <T> T getObjectFromJson(String json, Class<T> tClass){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(json, tClass);
+        } catch (IOException e) {
+            log.error("convert json to object error: ", e);
+            return null;
+        }
+    }
+
+    public static  String convertObjectToJson(Object object){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(object);
+        } catch (IOException e) {
+            log.error("convert json to object error: ", e);
+            return null;
+        }
+    }
+
+    public static Optional<String> decrypt(String s) {
+        StandardPBEStringEncryptor decrypt = new StandardPBEStringEncryptor();
+        decrypt.setPassword(CommonSymbol.ENCRYPTION_KEY);
+        return Optional.ofNullable(s)
+                .map(string -> {
+                    try {
+                        return decrypt.decrypt(string);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                });
+    }
+
+    public static String encrypt(String s) {
+        StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+        encryptor.setPassword(CommonSymbol.ENCRYPTION_KEY);
+        return Optional.ofNullable(s)
+                .map(string -> {
+                    try {
+                        return encryptor.encrypt(string);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                })
+                .orElse(null);
+    }
 }
