@@ -1,11 +1,11 @@
 DROP TABLE IF EXISTS `user_detail_data`;
 CREATE TABLE `user_detail_data` (
   `user_detail_data_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL COMMENT '权限名',
-  `password` VARBINARY(255) NOT NULL COMMENT '权限描述',
-  `account_non_expired` tinyint(1) NOT NULL COMMENT '权限地址',
-  `account_non_locked` tinyint(1) NOT NULL COMMENT '权限地址',
-  `credentials_non_expired` tinyint(1) NOT NULL COMMENT '权限地址',
+  `username` varchar(45) NOT NULL COMMENT '用户名',
+  `password` VARBINARY(255) NOT NULL COMMENT '用户密码',
+  `account_non_expired` tinyint(1) NOT NULL COMMENT '',
+  `account_non_locked` tinyint(1) NOT NULL COMMENT '',
+  `credentials_non_expired` tinyint(1) NOT NULL COMMENT '',
 
   `created_at` datetime NOT NULL,
   `modified_at` datetime NOT NULL,
@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS `user_role_data`;
 CREATE TABLE `user_role_data` (
   `user_role_data_id` bigint(20) NOT NULL AUTO_INCREMENT,
   `authority` varchar(45) NOT NULL COMMENT '权限名',
-  `user_detail_data_id` bigint(20) NOT NULL COMMENT '权限描述',
+  `user_detail_data_id` bigint(20) NOT NULL COMMENT 'fk',
 
   `created_at` datetime NOT NULL,
   `modified_at` datetime NOT NULL,
